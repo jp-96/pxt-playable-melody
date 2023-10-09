@@ -1,0 +1,10 @@
+{
+  "melody.arrayPlayable|block": "melody(array) $melody",
+  "melody.declareMelody|block": "melody id $id",
+  "melody.declareNote|block": "note %name %fraction|beat",
+  "melody.hexPlayable|block": "melody(hex) $melody",
+  "melody.melodyPlayable|block": "melody id:$id",
+  "melody|block": "melody",
+  "{id:category}Melody": "Melody",
+  "{id:group}Melody": "Melody"
+}
