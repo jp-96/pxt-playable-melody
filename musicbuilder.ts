@@ -36,7 +36,7 @@ namespace melody {
                 break;
             default:
                 break;
-        } 
+        }
         pins.analogPitch(frequency, ms)
     }
 
@@ -258,7 +258,7 @@ namespace melody {
     //% useEnumVal=1
     export function declareNote(name: Note, fraction: BeatFraction) {
         const note = _hzToNote(name)
-        let duration = 4
+        let duration = 0
         switch (fraction) {
             case BeatFraction.Whole:
                 duration = 4
@@ -284,7 +284,7 @@ namespace melody {
             default:
                 break;
         }
-        _notes.push(note + ":" + duration)
+        _notes.push(note + ((duration <= 0) ? "" : ":" + duration))
     }
 
     //% block="melody id:$id"
