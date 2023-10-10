@@ -1,7 +1,5 @@
 {
   "melody": "melody blocks\nicon: a Unicode identifier for an icon from the Font Awesome icon set.\nhttp://fontawesome.io/icons",
-  "melody._csvToStrings": "array of csv strings to array of strings\n\n@returns array of strings",
-  "melody._csvToStrings|param|csv": "array of csv strings.",
   "melody.arrayPlayable": "array melody to playable.\nThe notes in a melody are held in an array of strings. Each string in the array\nis a note of the melody. You make a melody by assembling the notes along with\nthe duration that the note plays for. The melody is formed like this:\nNOTE[octave][:duration] eg: ['g5:1']\nsee also: https://makecode.microbit.org/reference/music/making-melodies\n\n@returns Playable object",
   "melody.arrayPlayable|param|melody": "array of strings",
   "melody.hexPlayable": "hex melody to playable.\nThe hex format is 2 bytes (4 characters) per note. First note byte is midi\nnote number, second byte is duration in quarter beats. The note\nnumber 0 is reserved for rests.\nhex examples: https://github.com/microsoft/pxt-microbit/blob/master/libs/core/melodies.ts\n\n@returns Playable object",

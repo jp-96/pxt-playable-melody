@@ -9,7 +9,7 @@
         "README.md",
         "enums.d.ts",
         "shims.d.ts",
-        "musicbuilder.ts"
+        "builder.ts"
     ],
     "testFiles": [
         "test.ts"
