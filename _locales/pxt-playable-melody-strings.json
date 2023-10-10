@@ -1,10 +1,13 @@
 {
-  "melody.arrayPlayable|block": "melody(array) $melody",
+  "melody.arrayPlayable|block": "melody array $melody",
   "melody.declareMelody|block": "melody id $id",
-  "melody.declareNote|block": "note %name %fraction|beat",
-  "melody.hexPlayable|block": "melody(hex) $melody",
-  "melody.melodyPlayable|block": "melody id:$id",
+  "melody.hexPlayable|block": "melody hex $melody",
+  "melody.melodyPlayable|block": "melody id $id",
+  "melody.note|block": "note $note : $duration",
+  "melody.rest|block": "rest for %fraction|beat",
+  "melody.tone|block": "tone %name for %fraction|beat",
   "melody|block": "melody",
   "{id:category}Melody": "Melody",
-  "{id:group}Melody": "Melody"
+  "{id:group}Melody": "Melody",
+  "{id:group}Playable": "Playable"
 }
