@@ -5,6 +5,10 @@
  */
 //% weight=100 color=#696969 icon="\uf1b2"
 namespace melody {
+
+    const MAGIC_DURATION_EIGHTH = 5     // BeatFraction.Eighth 1/8
+    const MAGIC_DURATION_SIXTEENTH = 7  // BeatFraction.Sixteenth 1/16
+
     const NOTE_HZ = [
         Note.C3, Note.CSharp3, Note.D3, Note.Eb3, Note.E3, Note.F3, Note.FSharp3, Note.G3, Note.GSharp3, Note.A3, Note.Bb3, Note.B3,
         Note.C4, Note.CSharp4, Note.D4, Note.Eb4, Note.E4, Note.F4, Note.FSharp4, Note.G4, Note.GSharp4, Note.A4, Note.Bb4, Note.B4,
@@ -16,6 +20,27 @@ namespace melody {
         "C4", "C#4", "D4", "Eb4", "E4", "F4", "F#4", "G4", "G#4", "A4", "Bb4", "B4",
         "C5", "C#5", "D5", "Eb5", "E5", "F5", "F#5", "G5", "G#5", "A5", "Bb5", "B5",
     ]
+
+    function customPlayTone(frequency: number, ms: number) {
+        const beat = music.beat()
+        const duration = ms / (beat >> 2)
+        console.log(duration)
+        switch (duration) {
+            case MAGIC_DURATION_EIGHTH:
+                // 1/8 beat
+                ms = beat >> 3
+                break;
+            case MAGIC_DURATION_SIXTEENTH:
+                // 1/16 beat
+                ms = beat >> 4
+                break;
+            default:
+                break;
+        } 
+        pins.analogPitch(frequency, ms)
+    }
+
+    music.setPlayTone(customPlayTone)
 
     export class Melody {
         id: number
@@ -101,14 +126,11 @@ namespace melody {
                 left = mid
             }
             if (right - left > 1) {
-                console.log("left:" + left + " right:" + right)
                 continue
             }
             if ((hz - NOTE_HZ[left]) < (NOTE_HZ[right] - hz)) {
-                console.log("hit:" + left + " hz:" + hz)
                 return NOTE_NAME[left]
             }
-            console.log("hit:" + right + " hz:" + hz)
             return NOTE_NAME[right]
         }
     }
@@ -238,32 +260,25 @@ namespace melody {
         const note = _hzToNote(name)
         let duration = 4
         switch (fraction) {
-            case BeatFraction.Whole:    // ok
-                //return beat;
+            case BeatFraction.Whole:
                 duration = 4
                 break;
-            case BeatFraction.Half:     // ok
-                //return beat >> 1;
+            case BeatFraction.Half:
                 duration = 2
                 break;
-            case BeatFraction.Quarter:  // ok
-                //return beat >> 2;
+            case BeatFraction.Quarter:
                 duration = 1
                 break;
-            case BeatFraction.Eighth:   // not supported
-                //return beat >> 3;
-                duration = 1
+            case BeatFraction.Eighth:
+                duration = MAGIC_DURATION_EIGHTH
                 break;
-            case BeatFraction.Sixteenth: // not supported
-                // return beat >> 4;
-                duration = 1
+            case BeatFraction.Sixteenth:
+                duration = MAGIC_DURATION_SIXTEENTH
                 break;
-            case BeatFraction.Double:   // ok
-                //return beat << 1;
+            case BeatFraction.Double:
                 duration = 8
                 break;
-            case BeatFraction.Breve:    // ok
-                //return beat << 2;
+            case BeatFraction.Breve:
                 duration = 16
                 break;
             default:
