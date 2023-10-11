@@ -38,7 +38,7 @@ namespace melody {
     }
 
     class Melody {
-        constructor(public id: number, public cb: () => void) {
+        constructor(public readonly id: number, public readonly cb: () => void) {
         }
     }
 
@@ -126,48 +126,26 @@ namespace melody {
         return res
     }
 
-    /**
-     * array melody to playable.
-     * The notes in a melody are held in an array of strings. Each string in the array
-     * is a note of the melody. You make a melody by assembling the notes along with
-     * the duration that the note plays for. The melody is formed like this:
-     * NOTE[octave][:duration] eg: ['g5:1']
-     * see also: https://makecode.microbit.org/reference/music/making-melodies
-     * @param melody array of strings
-     * @returns Playable object
-     */
     //% blockId="melody_array_playable"
-    //% block="melody array $melody"
+    //% block="melody $melody"
     //% weight=130
-    //% duplicateShadowOnDrag
-    //% group="Playable"
     export function arrayPlayable(melody: string[]): music.Playable {
+        // https://makecode.microbit.org/reference/music/making-melodies
         return new music.StringArrayPlayable(_csvToStrings(melody), undefined)
     }
 
-    /**
-     * hex melody to playable.
-     * The hex format is 2 bytes (4 characters) per note. First note byte is midi
-     * note number, second byte is duration in quarter beats. The note
-     * number 0 is reserved for rests.
-     * hex examples: https://github.com/microsoft/pxt-microbit/blob/master/libs/core/melodies.ts
-     * @param melody hex text
-     * @returns Playable object
-     */
     //% blockId="melody_hex_playable"
-    //% block="melody hex $melody"
-    //% melody.defl="4f01540158015b0258015b03"
+    //% block="melody hex $hex"
+    //% hex.defl="4f01540158015b0258015b03"
     //% weight=120
-    //% duplicateShadowOnDrag
-    //% group="Playable"
-    export function hexPlayable(melody: string): music.Playable {
-        return new music.StringArrayPlayable(music._bufferToMelody(Buffer.fromHex(melody)), undefined)
+    export function hexPlayable(hex: string): music.Playable {
+        // hex examples: https://github.com/microsoft/pxt-microbit/blob/master/libs/core/melodies.ts
+        return new music.StringArrayPlayable(music._bufferToMelody(Buffer.fromHex(hex)), undefined)
     }
 
+    //% blockId="melody_id_playable"
     //% block="melody id $id"
     //% weight=110
-    //% duplicateShadowOnDrag
-    //% group="Playable"
     export function melodyPlayable(id: number): music.Playable {
         const ret: string[] = []
         while (_notes.length > 0) {
@@ -185,11 +163,39 @@ namespace melody {
         return arrayPlayable(ret)
     }
 
+    //% block="melody id $id"
+    //% weight=100
+    //% group="Declare"
+    export function declareMelody(id: number, body: () => void) {
+        const melody = new Melody(id, body)
+        _melodies.push(melody)
+    }
+
+    //% block="scale %scale for %fraction|beat"
+    //% scale.shadow="device_note"
+    //% scale.defl=Note.C
+    //% fraction.defl=BeatFraction.Whole
+    //% weight=90
+    //% group="Declare"
+    export function scale(scale: number, fraction: BeatFraction) {
+        const obj = new FormedNote(_hzToNote(scale), _fractionToDuration(fraction))
+        _notes.push(obj.formed)
+    }
+
+    //% block="rest for %fraction|beat"
+    //% fraction.defl=BeatFraction.Whole
+    //% weight=80
+    //% group="Declare"
+    export function rest(fraction: BeatFraction) {
+        const obj = new FormedNote("R", _fractionToDuration(fraction))
+        _notes.push(obj.formed)
+    }
+
     //% block="note $note : $duration"
     //% note.defl="C4"
     //% duration:defl="4"
-    //% weight=100
-    //% group="Melody"
+    //% weight=70
+    //% group="Declare"
     export function note(note: string, duration: number) {
         switch (duration) {
             case -1:    // 1 beat
@@ -207,39 +213,13 @@ namespace melody {
                 duration = MAGIC_DURATION_SIXTEENTH
                 break
             default:
+                if (0 > duration) {
+                    duration = 4
+                }
                 break
         }
         const obj = new FormedNote(note, duration)
         _notes.push(obj.formed)
-    }
-
-    //% block="tone %name for %fraction|beat"
-    //% name.shadow="device_note"
-    //% name.defl=Note.C
-    //% fraction.def="1"
-    //% weight=90
-    //% group="Melody"
-    export function tone(tone: number, fraction: BeatFraction) {
-        const obj = new FormedNote(_hzToNote(tone), _fractionToDuration(fraction))
-        _notes.push(obj.formed)
-    }
-
-    //% block="rest for %fraction|beat"
-    //% fraction.def="1"
-    //% weight=80
-    //% group="Melody"
-    export function rest(fraction: BeatFraction) {
-        const obj = new FormedNote("R", _fractionToDuration(fraction))
-        _notes.push(obj.formed)
-    }
-
-    //% block="melody id $id"
-    //% weight=70
-    //% duplicateShadowOnDrag
-    //% group="Melody"
-    export function declareMelody(id: number, body: () => void) {
-        const melody = new Melody(id, body)
-        _melodies.push(melody)
     }
 
 }
