@@ -128,6 +128,10 @@ namespace melody {
 
     //% blockId="melody_array_playable"
     //% block="melody $melody"
+    //% toolboxParent=music_playable_play
+    //% toolboxParentArgument=toPlay
+    //% duplicateShadowOnDrag
+    //% parts="headphone"
     //% weight=130
     export function arrayPlayable(melody: string[]): music.Playable {
         // https://makecode.microbit.org/reference/music/making-melodies
@@ -137,6 +141,10 @@ namespace melody {
     //% blockId="melody_hex_playable"
     //% block="melody hex $hex"
     //% hex.defl="4f01540158015b0258015b03"
+    //% toolboxParent=music_playable_play
+    //% toolboxParentArgument=toPlay
+    //% duplicateShadowOnDrag
+    //% parts="headphone"
     //% weight=120
     export function hexPlayable(hex: string): music.Playable {
         // hex examples: https://github.com/microsoft/pxt-microbit/blob/master/libs/core/melodies.ts
@@ -145,6 +153,10 @@ namespace melody {
 
     //% blockId="melody_id_playable"
     //% block="melody id $id"
+    //% toolboxParent=music_playable_play
+    //% toolboxParentArgument=toPlay
+    //% duplicateShadowOnDrag
+    //% parts="headphone"
     //% weight=110
     export function melodyPlayable(id: number): music.Playable {
         const ret: string[] = []
